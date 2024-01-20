@@ -1,10 +1,12 @@
 ﻿using MessagePack.Formatters;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
 using ServerService.Abstracts;
 using ServerService.Models;
 using ServerService.Models.Views;
 using ServerService.Protection;
+using ServerService.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -18,35 +20,45 @@ namespace ServerService.Controllers
      [Route("[controller]")]
     public class ServerController : Controller
     {
- 
+         
         private readonly ITreeService _treeService;
-        private Guid _treeKey = new Guid("6f806b0f-bdd9-461b-b109-dfa94871e55c");
+
+        private Guid _treeKey;
         private List<XmlBuisness> _buisnessList = new();    
         private string _fullPathToFile;
+
+        private IConfigurationRoot _idKeyConfigurationr { get; }
 
 
         public ServerController(ITreeService treeService, IWebHostEnvironment env)
         {
 
-            Console.WriteLine("Server API");
-           
+            Console.WriteLine("Server API Started");
+
+            _idKeyConfigurationr = new ConfigurationBuilder()
+              .SetBasePath(env.ContentRootPath)
+              .AddJsonFile("appsettings.json")
+              .Build();
+
+            _treeKey = new Guid(_idKeyConfigurationr.GetConnectionString("Tree_ID"));
             _treeService = treeService;
+            LocalDataModel.SetXmlBuisnessList(_buisnessList);
 
             var pathToData = env.ContentRootPath;
             _fullPathToFile = Path.Combine(pathToData, "static.xml");
         }
+
+
+        public ViewResult Interection() => View("InitialView");
          
-
         #region trees api
-        
-        public ViewResult Interection() =>  View("InitialView");
-        
-
         [HttpPost]
         [Route("{treekey}/treeitem")]
         public async Task<ActionResult<TreeItemView>> CreateTreeItem(Guid treekey, [FromBody] TreeItemInfo info)
         {
-            Console.WriteLine("Server API");
+
+            Console.WriteLine("CreateTreeItem request");
+
             var result = await _treeService.CreateTreeItem(treekey, info);
             return Ok(result);
         }
@@ -56,7 +68,9 @@ namespace ServerService.Controllers
         [Route("tree")]
         public async Task<ActionResult> CreateTree([FromBody] CreationTreeInfo info)
         {
-            Console.WriteLine("Server API");
+
+            Console.WriteLine("Creation Tree request");
+
             var result = await _treeService.CreateTree(info.TreeKey, info.SortType, info.Name);
              
             return Ok(result);
@@ -67,7 +81,9 @@ namespace ServerService.Controllers
         [Route("treeitem/{treeitemid}")]
         public async Task<ActionResult<TreeItemView>> GetTreeItem(Guid treeitemid)
         {
-            Console.WriteLine("Server API");
+
+            Console.WriteLine("Get Tree Item request ");
+
             var result = await _treeService.GetTreeItem(treeitemid);
             GetAndCheckFileData(result.EntityId, result.ParentEntityId, result.EntityValue);
             return Ok(result);
@@ -78,6 +94,8 @@ namespace ServerService.Controllers
         [Route("treeitem/{treeitemid}/children")]
         public async Task<ActionResult<TreeItemView>> GetChildTreeItems(Guid treeitemid)
         {
+
+            Console.WriteLine("Get Chiled Tree Items request");
 
             var results = await _treeService.GetChildTreeItems(treeitemid);
 

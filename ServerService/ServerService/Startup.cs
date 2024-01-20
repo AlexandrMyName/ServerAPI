@@ -4,11 +4,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.OpenApi.Models;
+using Quartz;
 using ServerService.Abstracts;
 using ServerService.Domain;
 using ServerService.Services;
-
+using ServerService.Utils;
+ 
 
 namespace ServerService
 {
@@ -34,6 +35,23 @@ namespace ServerService
         public void ConfigureServices(IServiceCollection services)
         {
 
+            services.AddQuartz(q =>
+            {
+                q.UseMicrosoftDependencyInjectionJobFactory();
+ 
+                var jobKey = new JobKey("HelloWorldJob");
+                 
+                q.AddJob<TimerActivityJob>(opts => opts.WithIdentity(jobKey));
+ 
+                q.AddTrigger(opts => opts
+                    .ForJob(jobKey)  
+                    .WithIdentity("TimerBuisnessActivator-trigger") 
+                    .WithCronSchedule("0/5 * * * * ?")); // 5 seconds
+
+            });
+
+            services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
+             
             services.AddTransient<ITreeService, TreeService>();
 
             services.AddScoped<TreeRepository>();
@@ -42,7 +60,8 @@ namespace ServerService
             services.AddMvc(op=> op.EnableEndpointRouting = false);
   
             services.AddEntityFrameworkNpgsql().AddDbContext<TreeContext>(opt =>
-              opt.UseNpgsql(_api_dadata.GetConnectionString("TreeConnection")));
+              opt
+              .UseNpgsql(_api_dadata.GetConnectionString("TreeConnection")));
         }
 
        
@@ -51,16 +70,14 @@ namespace ServerService
 
             if (env.IsDevelopment())
             {
-               // app.UseDeveloperExceptionPage();
+                 app.UseDeveloperExceptionPage();
          
             }
 
              app.UseHttpsRedirection();
 
              app.UseRouting();
-
-            //app.UseAuthorization();
-           // app.UseMvcWithDefaultRoute();
+             
             app.UseEndpoints(endpoints =>
             {
                 endpoints

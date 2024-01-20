@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "6sSj6AziDHTvqp/ffWk0ljli5DcgXGIFQxF3YZaXRW0C/lEYexo+RYxAtH+8XSlbcihgcufqHr7/bIuYdXPmvQ==",
+  "dgSpecHash": "+MR5oLqSDuIhqKoufC3e2xNegE9CCPQyCw4vLyFVI8ZxI74aUmn5QZU3gks3gXgJSp0z+P9RCB/LWwPHApbjbg==",
   "success": true,
   "projectFilePath": "D:\\NET_Apps\\Test\\ServerAPI\\ServerService\\ServerService\\ServerService.csproj",
   "expectedPackageFiles": [
@@ -86,8 +86,8 @@
     "C:\\Users\\sasha\\.nuget\\packages\\microsoft.extensions.caching.abstractions\\7.0.0\\microsoft.extensions.caching.abstractions.7.0.0.nupkg.sha512",
     "C:\\Users\\sasha\\.nuget\\packages\\microsoft.extensions.caching.memory\\7.0.0\\microsoft.extensions.caching.memory.7.0.0.nupkg.sha512",
     "C:\\Users\\sasha\\.nuget\\packages\\microsoft.extensions.configuration.abstractions\\7.0.0\\microsoft.extensions.configuration.abstractions.7.0.0.nupkg.sha512",
-    "C:\\Users\\sasha\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\7.0.0\\microsoft.extensions.dependencyinjection.7.0.0.nupkg.sha512",
-    "C:\\Users\\sasha\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\7.0.0\\microsoft.extensions.dependencyinjection.abstractions.7.0.0.nupkg.sha512",
+    "C:\\Users\\sasha\\.nuget\\packages\\microsoft.extensions.dependencyinjection\\8.0.0\\microsoft.extensions.dependencyinjection.8.0.0.nupkg.sha512",
+    "C:\\Users\\sasha\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\8.0.0\\microsoft.extensions.dependencyinjection.abstractions.8.0.0.nupkg.sha512",
     "C:\\Users\\sasha\\.nuget\\packages\\microsoft.extensions.dependencymodel\\7.0.0\\microsoft.extensions.dependencymodel.7.0.0.nupkg.sha512",
     "C:\\Users\\sasha\\.nuget\\packages\\microsoft.extensions.diagnostics.healthchecks\\6.0.0\\microsoft.extensions.diagnostics.healthchecks.6.0.0.nupkg.sha512",
     "C:\\Users\\sasha\\.nuget\\packages\\microsoft.extensions.diagnostics.healthchecks.abstractions\\6.0.0\\microsoft.extensions.diagnostics.healthchecks.abstractions.6.0.0.nupkg.sha512",
