@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
+using Quartz;
 using ServerService.Abstracts;
 using ServerService.Models;
 using ServerService.Models.Views;
@@ -10,8 +11,9 @@ using ServerService.Utils;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
-
+ 
 
 namespace ServerService.Controllers
 {
@@ -33,7 +35,9 @@ namespace ServerService.Controllers
         public ServerController(ITreeService treeService, IWebHostEnvironment env)
         {
 
-            Console.WriteLine("Server API Started");
+            var jobKey = new JobKey("buisneses");
+             
+            Console.WriteLine("Server Started!");
 
             _idKeyConfigurationr = new ConfigurationBuilder()
               .SetBasePath(env.ContentRootPath)
@@ -42,7 +46,8 @@ namespace ServerService.Controllers
 
             _treeKey = new Guid(_idKeyConfigurationr.GetConnectionString("Tree_ID"));
             _treeService = treeService;
-            LocalDataModel.SetXmlBuisnessList(_buisnessList);
+             
+            _buisnessList = LocalDataModel.XmlBuisneses;
 
             var pathToData = env.ContentRootPath;
             _fullPathToFile = Path.Combine(pathToData, "static.xml");
@@ -122,10 +127,22 @@ namespace ServerService.Controllers
         [Route("FlatTree")]
         public async Task<ActionResult<TreeItemView>> GetTreeItemsFlatTree([FromBody] GetingTreeItemsByTreeInfo info)
         {
+            
+            var results = await _treeService.GetTreeItemsTree(info);
+            results.ToList().ForEach(res => GetAndCheckFileData(res.EntityId, res.ParentEntityId, res.EntityValue));
+            return Ok(results);
+        }
 
-            var result = await _treeService.GetTreeItemsTree(info);
+         
+        [HttpPost]
+        [Route("CheckActivity")]
+        public ActionResult<bool> GetActivityStatusItemTree([FromBody] TreeItemView view)
+        {
+            var data = LocalDataModel.XmlBuisneses.Find(item => item.Id == view.EntityId);
+ 
+            if(data == null) return Ok(false); 
 
-            return Ok(result);
+            return Ok(data.IsActive);
         }
         #endregion
 
@@ -142,9 +159,7 @@ namespace ServerService.Controllers
 
                 _buisnessList.Add(buisness);
                 xml.Save(_buisnessList, "serverAPI");
-
-                SetToDataBase(buisness);
-                 
+ 
             }
             else
             {
@@ -158,10 +173,24 @@ namespace ServerService.Controllers
                     _buisnessList.Add(buisness);
                     xml.Save(_buisnessList, "serverAPI");
                 }
+                 
+            }
 
-                SetToDataBase(buisness);
+            var activityInfo = LocalDataModel.XmlBuisneses.Find(item => item.Name == buisness.Name);
+
+            if (activityInfo == null)
+            {
+                Console.WriteLine("Не найден объект");
+                LocalDataModel.XmlBuisneses.Add(buisness);
+                Console.WriteLine(LocalDataModel.XmlBuisneses.Count + " кол-во");
+            }
+            else
+            {
+                Console.WriteLine(activityInfo.Name);
             }
             
+            Console.WriteLine(activityInfo == null);
+            LocalDataModel.XmlBuisneses.ForEach(xml => { Console.WriteLine(xml.IsActive); });
         }
 
 
@@ -205,7 +234,7 @@ namespace ServerService.Controllers
             else
             {
 
-                //Change
+               
             } 
         }
     }

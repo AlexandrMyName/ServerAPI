@@ -1,0 +1,24 @@
+is_global = true
+build_property.TargetFramework = net6.0
+build_property.TargetPlatformMinVersion = 
+build_property.UsingMicrosoftNETSdkWeb = true
+build_property.ProjectTypeGuids = 
+build_property.InvariantGlobalization = 
+build_property.PlatformNeutralAssembly = 
+build_property._SupportedPlatformList = Linux,macOS,Windows
+build_property.RootNamespace = WebServiceForClient
+build_property.RootNamespace = WebServiceForClient
+build_property.ProjectDir = D:\NET_Apps\Test\ServerAPI\WebServiceForClient\WebServiceForClient\
+build_property.RazorLangVersion = 6.0
+build_property.SupportLocalizedComponentNames = 
+build_property.GenerateRazorMetadataSourceChecksumAttributes = 
+build_property.MSBuildProjectDirectory = D:\NET_Apps\Test\ServerAPI\WebServiceForClient\WebServiceForClient
+build_property._RazorSourceGeneratorDebug = 
+
+[D:/NET_Apps/Test/ServerAPI/WebServiceForClient/WebServiceForClient/Views/WebService/MainView.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcV2ViU2VydmljZVxNYWluVmlldy5jc2h0bWw=
+build_metadata.AdditionalFiles.CssScope = 
+
+[D:/NET_Apps/Test/ServerAPI/WebServiceForClient/WebServiceForClient/Views/WebService/OnSyncServerAPI.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcV2ViU2VydmljZVxPblN5bmNTZXJ2ZXJBUEkuY3NodG1s
+build_metadata.AdditionalFiles.CssScope = 

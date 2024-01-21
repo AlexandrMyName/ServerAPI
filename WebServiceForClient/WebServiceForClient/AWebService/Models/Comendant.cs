@@ -10,6 +10,8 @@ namespace WebServiceForClient.AWebService.Models
     public class Comendant : IDisposable
     {
 
+        public static string BaseUrl { get; private set; }
+
         public List<ComendantNode> NodesCmd = new();
 
         public void Dispose() =>  NodesCmd.ForEach(NodeCmd => NodeCmd.Dispose());
@@ -22,25 +24,30 @@ namespace WebServiceForClient.AWebService.Models
         private Comendant() { }
 
 
-        public Comendant Create() => InitComendant();
+        public static Comendant Create(string url) => InitComendant(url);
 
 
-        private Comendant InitComendant()
+        private static Comendant InitComendant(string url)
         {
+
+            BaseUrl = url;
 
             Comendant commendant = new Comendant();
 
-            var commendantPostCreateTree = new ComendantNode("", PostRequestType.CreateTree, GetRequestType.None);
+            var commendantPostCreateTree 
+                = new ComendantNode($"[NONE] ONLY SERVER", PostRequestType.None, GetRequestType.None);
 
-            var commendantPostCreateTreeItem = new ComendantNode("", PostRequestType.CreateTreeItem, GetRequestType.None);
+            var commendantPostCreateTreeItem 
+                = new ComendantNode($"[NONE] ONLY SERVER", PostRequestType.None, GetRequestType.None);
 
-            var commendantPostGetTreeItemsFlatTree = new ComendantNode("", PostRequestType.GetTreeItemsFlatTree, GetRequestType.None);
+            var commendantPostGetTreeItemsFlatTree 
+                = new ComendantNode(url + "", PostRequestType.GetTreeItemsFlatTree, GetRequestType.None);
 
-            var commendantGetParentTreeItems = new ComendantNode("", PostRequestType.None, GetRequestType.GetParentTreeItems);
+            var commendantGetParentTreeItems = new ComendantNode(url + "", PostRequestType.None, GetRequestType.GetParentTreeItems);
 
-            var commendantGetChildTreeItems = new ComendantNode("", PostRequestType.None, GetRequestType.GetChildTreeItems);
+            var commendantGetChildTreeItems = new ComendantNode(url + "", PostRequestType.None, GetRequestType.GetChildTreeItems);
 
-            var commendantGetTreeItem = new ComendantNode("", PostRequestType.None, GetRequestType.GetTreeItem);
+            var commendantGetTreeItem = new ComendantNode(url + "", PostRequestType.None, GetRequestType.GetTreeItem);
              
             commendant.NodesCmd.Add(commendantPostCreateTree);
             commendant.NodesCmd.Add(commendantPostCreateTreeItem);
@@ -77,6 +84,7 @@ namespace WebServiceForClient.AWebService.Models
                 getHTTP.Cmd = cmdUrl;
                 getHTTP.Type = getType;
              
+            
         }
 
 
