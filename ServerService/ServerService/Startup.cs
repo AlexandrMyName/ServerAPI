@@ -7,9 +7,12 @@ using Microsoft.Extensions.Hosting;
 using Quartz;
 using ServerService.Abstracts;
 using ServerService.Domain;
+using ServerService.Models;
 using ServerService.Services;
 using ServerService.Utils;
- 
+using System;
+using System.Collections.Generic;
+using static Quartz.Logging.OperationName;
 
 namespace ServerService
 {
@@ -35,20 +38,19 @@ namespace ServerService
         public void ConfigureServices(IServiceCollection services)
         {
 
+            LocalDataModel.SetXmlBuisnessList(new List<XmlBuisness>());
+
+            
+           
+
             services.AddQuartz(q =>
             {
+              
                 q.UseMicrosoftDependencyInjectionJobFactory();
- 
-                var jobKey = new JobKey("HelloWorldJob");
-                 
-                q.AddJob<TimerActivityJob>(opts => opts.WithIdentity(jobKey));
- 
-                q.AddTrigger(opts => opts
-                    .ForJob(jobKey)  
-                    .WithIdentity("TimerBuisnessActivator-trigger") 
-                    .WithCronSchedule("0/5 * * * * ?")); // 5 seconds
-
+  
             });
+
+            new ScedulesFactory().CreateActivityTimer(3);
 
             services.AddQuartzHostedService(q => q.WaitForJobsToComplete = true);
              

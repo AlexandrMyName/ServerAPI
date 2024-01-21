@@ -1,0 +1,38 @@
+﻿<!DOCTYPE html>
+
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@using WebServiceForClient.AWebService.Models
+  
+@model List<RootTreeResponse>
+
+<head>
+
+</head>
+
+<form asp-controller="WebService" asp-action="OnSyncServerAPI" method="post">
+
+    @{
+        if (Model != null)
+        {
+            <h1 style="background-color:DodgerBlue;">Дерево (api создания нового есть, сервер перелючает активность всех эллементов каждые 3 сек, файл хранится в серверном пространстве (XML) )</h1>
+             <br/>
+            foreach (var item in Model)
+            {
+                <b style="color=red"> 
+                <label class="col-form-label">Имя подразделения: @item.EntityValue</label> <br />
+                  <label class="col-form-label">Идендификатор: @item.EntityId</label> <br />
+                    <label class="col-form-label">Родитель: @item.ParentEntityId</label> <br />
+                <label class="col-form-label">Уровень в дереве: @item.Level</label> <br />
+                    <label class="col-form-label">Активность: @item.Path</label> <br />
+                    <br /><br />
+                </b>
+            }
+        }
+        else
+        {
+            <label class="col-form-label">API SERVER WAS FAILED</label>
+        }
+    }
+    <br /> <br />
+    <button type="submit" class="btn-outline-info">синхронизировать данные</button>
+</form>

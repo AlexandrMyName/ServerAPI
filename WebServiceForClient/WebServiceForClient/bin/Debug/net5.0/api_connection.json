@@ -1,0 +1,7 @@
+{
+  "ApiServer": {
+    "ip_address": "https://localhost:44358/Server/",
+    "secret": "d05e87fce4c513f0c65795ec21c09c34caf39976",
+    "token": "d05e87fce4c513f0c65795ec21c09c34caf39976"
+  }
+}

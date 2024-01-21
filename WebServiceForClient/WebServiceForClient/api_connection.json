@@ -1,0 +1,7 @@
+{
+  "ApiServer": {
+    "ip_address": "https://localhost:5001/Server/",
+    "secret": "d05e87fce4c513f0c65795ec21c09c34caf39976",
+    "treeRootID": "6f806b0f-bdd9-461b-b109-dfa94871e55c"
+  }
+}
